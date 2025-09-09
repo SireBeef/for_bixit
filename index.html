@@ -15,6 +15,10 @@
                 margin-right: auto;
                 margin-left: auto;
             }
+            #main-chart {
+                height: 30em;
+                padding-bottom: 30px;
+            }
             .single-symbol-section-wrapper {
                 display: grid;
                 grid-gap: 10px;
@@ -85,7 +89,42 @@
             </script>
         </div>
         <img id="title-image" src="./title.png" />
-        <div id="main-content" />
+        <div id="main-content">
+            <div id="main-chart">
+                <script
+                    type="text/javascript"
+                    src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+                    async
+                >
+                      {
+                      "allow_symbol_change": true,
+                      "calendar": false,
+                      "details": false,
+                      "hide_side_toolbar": true,
+                      "hide_top_toolbar": false,
+                      "hide_legend": false,
+                      "hide_volume": false,
+                      "hotlist": false,
+                      "interval": "D",
+                      "locale": "en",
+                      "save_image": true,
+                      "style": "1",
+                      "symbol": "NASDAQ:IXIC",
+                      "theme": "dark",
+                      "timezone": "Etc/UTC",
+                      "backgroundColor": "#0F0F0F",
+                      "gridColor": "rgba(242, 242, 242, 0.06)",
+                      "watchlist": [
+                        "NSE:NIFTY"
+                      ],
+                      "withdateranges": false,
+                      "compareSymbols": [],
+                      "studies": [],
+                      "autosize": true
+                    }
+                </script>
+            </div>
+        </div>
     </body>
     <script>
         const watchlist = [
@@ -93,9 +132,10 @@
             "NASDAQ:TSLA",
             "NASDAQ:NVDA",
             "AMEX:GLD",
-            "NASDAQ:GLXY",
             "BATS:GDX",
+            "BATS:GDXJ",
             "AMEX:SLV",
+            "NASDAQ:GLXY",
             "NASDAQ:HOOD",
             "NASDAQ:COIN",
         ];
@@ -198,5 +238,8 @@
             newsWidgetDiv.appendChild(newsWidgetScript);
         }
         watchlist.forEach(createSymbolSection);
+        // Maybe use this for rss for the news symbols that are not working?
+        // need to do some research on what widget to use to style this.:
+        // `https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&oc=11&q=${symbolName.split(":")[1]}`;
     </script>
 </html>
