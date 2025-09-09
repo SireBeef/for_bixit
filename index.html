@@ -1,0 +1,178 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: black;
+            }
+            #title-image {
+                max-width: 50%;
+                height: 300px;
+                margin: -75px auto -100px auto;
+                display: block;
+            }
+            .main-content {
+                width: 95%;
+                margin-right: auto;
+                margin-left: auto;
+            }
+            .single-symbol-section-wrapper {
+                display: grid;
+                grid-gap: 10px;
+                max-height: 25em;
+                grid-template-columns: 3fr 1fr;
+                grid-template-rows: 1fr 9fr;
+            }
+            .chart-widget {
+                grid-column: 1;
+                grid-row: 1 / 3;
+            }
+            .single-widget-section {
+                grid-column: 2;
+                grid-row: 1 / 2;
+            }
+            .news-widget {
+                grid-column: 2;
+                grid-row: 2 / 3;
+            }
+            .single-widget {
+                max-width: 250px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .single-widget div {
+                height: 100px !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ticker-tape">
+            <script
+                type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+                async
+            >
+                  {
+                  "symbols": [
+                    {
+                      "proName": "FOREXCOM:SPXUSD",
+                      "title": "S&P 500 Index"
+                    },
+                    {
+                      "proName": "FOREXCOM:NSXUSD",
+                      "title": "US 100 Cash CFD"
+                    },
+                    {
+                      "proName": "FX_IDC:EURUSD",
+                      "title": "EUR to USD"
+                    },
+                    {
+                      "proName": "BITSTAMP:BTCUSD",
+                      "title": "Bitcoin"
+                    },
+                    {
+                      "proName": "BITSTAMP:ETHUSD",
+                      "title": "Ethereum"
+                    }
+                  ],
+                  "colorTheme": "dark",
+                  "locale": "en",
+                  "largeChartUrl": "",
+                  "isTransparent": true,
+                  "showSymbolLogo": true,
+                  "displayMode": "adaptive"
+                }
+            </script>
+        </div>
+        <img id="title-image" src="./title.png" />
+        <div class="main-content">
+            <div class="single-symbol-section-wrapper">
+                <div class="chart-widget">
+                    <script
+                        type="text/javascript"
+                        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+                        async
+                    >
+                        {
+                            "allow_symbol_change": true,
+                            "calendar": false,
+                            "details": false,
+                            "hide_side_toolbar": true,
+                            "hide_top_toolbar": false,
+                            "hide_legend": false,
+                            "hide_volume": false,
+                            "hotlist": false,
+                            "interval": "60",
+                            "locale": "en",
+                            "save_image": true,
+                            "style": "1",
+                            "symbol": "NASDAQ:AAPL",
+                            "theme": "dark",
+                            "timezone": "America/New_York",
+                            "backgroundColor": "#0F0F0F",
+                            "gridColor": "rgba(242, 242, 242, 0.06)",
+                            "watchlist": [],
+                            "withdateranges": false,
+                            "compareSymbols": [],
+                            "studies": [],
+                            "autosize": true,
+                            "isTransparent": true,
+                            "width": "100%",
+                            "height": "100%"
+                        }
+                    </script>
+                </div>
+                <div class="single-widget-section">
+                    <div class="single-widget">
+                        <script
+                            type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                            async
+                        >
+                            {
+                                "symbol": "NASDAQ:AAPL",
+                                "colorTheme": "dark",
+                                "isTransparent": true,
+                                "locale": "en",
+                                "width": "100%"
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="news-widget">
+                    <script
+                        type="text/javascript"
+                        src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
+                        async
+                    >
+                        {
+                            "displayMode": "regular",
+                            "feedMode": "symbol",
+                            "symbol": "NASDAQ:AAPL",
+                            "colorTheme": "dark",
+                            "isTransparent": true,
+                            "locale": "en",
+                            "width": "100%",
+                            "height": "100%"
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const script = document.createElement("script");
+        script.src =
+            "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
+        script.type = "text/javascript";
+        script.async = true;
+        script.innerHTML = `
+        {
+          "symbol": "NASDAQ:AAPL",
+          "colorTheme": "dark",
+          "isTransparent": false,
+          "locale": "en",
+          "width": 350
+        }`;
+        container.current.appendChild(script);
+    </script>
+</html>
