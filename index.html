@@ -10,7 +10,7 @@
                 margin: -75px auto -100px auto;
                 display: block;
             }
-            .main-content {
+            #main-content {
                 width: 95%;
                 margin-right: auto;
                 margin-left: auto;
@@ -21,6 +21,7 @@
                 max-height: 25em;
                 grid-template-columns: 3fr 1fr;
                 grid-template-rows: 1fr 9fr;
+                padding-bottom: 30px;
             }
             .chart-widget {
                 grid-column: 1;
@@ -35,7 +36,7 @@
                 grid-row: 2 / 3;
             }
             .single-widget {
-                max-width: 250px;
+                max-width: 300px;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -84,95 +85,118 @@
             </script>
         </div>
         <img id="title-image" src="./title.png" />
-        <div class="main-content">
-            <div class="single-symbol-section-wrapper">
-                <div class="chart-widget">
-                    <script
-                        type="text/javascript"
-                        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
-                        async
-                    >
-                        {
-                            "allow_symbol_change": true,
-                            "calendar": false,
-                            "details": false,
-                            "hide_side_toolbar": true,
-                            "hide_top_toolbar": false,
-                            "hide_legend": false,
-                            "hide_volume": false,
-                            "hotlist": false,
-                            "interval": "60",
-                            "locale": "en",
-                            "save_image": true,
-                            "style": "1",
-                            "symbol": "NASDAQ:AAPL",
-                            "theme": "dark",
-                            "timezone": "America/New_York",
-                            "backgroundColor": "#0F0F0F",
-                            "gridColor": "rgba(242, 242, 242, 0.06)",
-                            "watchlist": [],
-                            "withdateranges": false,
-                            "compareSymbols": [],
-                            "studies": [],
-                            "autosize": true,
-                            "isTransparent": true,
-                            "width": "100%",
-                            "height": "100%"
-                        }
-                    </script>
-                </div>
-                <div class="single-widget-section">
-                    <div class="single-widget">
-                        <script
-                            type="text/javascript"
-                            src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-                            async
-                        >
-                            {
-                                "symbol": "NASDAQ:AAPL",
-                                "colorTheme": "dark",
-                                "isTransparent": true,
-                                "locale": "en",
-                                "width": "100%"
-                            }
-                        </script>
-                    </div>
-                </div>
-                <div class="news-widget">
-                    <script
-                        type="text/javascript"
-                        src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
-                        async
-                    >
-                        {
-                            "displayMode": "regular",
-                            "feedMode": "symbol",
-                            "symbol": "NASDAQ:AAPL",
-                            "colorTheme": "dark",
-                            "isTransparent": true,
-                            "locale": "en",
-                            "width": "100%",
-                            "height": "100%"
-                        }
-                    </script>
-                </div>
-            </div>
-        </div>
+        <div id="main-content" />
     </body>
     <script>
-        const script = document.createElement("script");
-        script.src =
-            "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
-        script.type = "text/javascript";
-        script.async = true;
-        script.innerHTML = `
-        {
-          "symbol": "NASDAQ:AAPL",
-          "colorTheme": "dark",
-          "isTransparent": false,
-          "locale": "en",
-          "width": 350
-        }`;
-        container.current.appendChild(script);
+        const watchlist = [
+            "COINBASE:BTCUSDT",
+            "NASDAQ:TSLA",
+            "NASDAQ:NVDA",
+            "AMEX:GLD",
+            "NASDAQ:GLXY",
+            "BATS:GDX",
+            "AMEX:SLV",
+            "NASDAQ:HOOD",
+            "NASDAQ:COIN",
+        ];
+
+        function createSymbolSection(symbolName) {
+            const mainContentDiv = document.getElementById("main-content");
+            const singleSymbolSectionWrapper = document.createElement("div");
+            const chartWidgetDiv = document.createElement("div");
+            const singleWidgetSectionDiv = document.createElement("div");
+            const singleWidgetDiv = document.createElement("div");
+            const newsWidgetDiv = document.createElement("div");
+
+            singleSymbolSectionWrapper.className =
+                "single-symbol-section-wrapper";
+            chartWidgetDiv.className = "chart-widget";
+            singleWidgetSectionDiv.className = "single-widget-section";
+            singleWidgetDiv.className = "single-widget";
+            newsWidgetDiv.className = "news-widget";
+            singleWidgetSectionDiv.appendChild(singleWidgetDiv);
+            singleSymbolSectionWrapper.appendChild(chartWidgetDiv);
+            singleSymbolSectionWrapper.appendChild(singleWidgetSectionDiv);
+            singleSymbolSectionWrapper.appendChild(newsWidgetDiv);
+            mainContentDiv.appendChild(singleSymbolSectionWrapper);
+
+            const chartScript = document.createElement("script");
+            const singleWidgetScript = document.createElement("script");
+            const newsWidgetScript = document.createElement("script");
+
+            chartScript.type = "text/javascript";
+            singleWidgetScript.type = "text/javascript";
+            newsWidgetScript.type = "text/javascript";
+
+            chartScript.async = true;
+            singleWidgetScript.async = true;
+            newsWidgetScript.async = true;
+
+            chartScript.src =
+                "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+            singleWidgetScript.src =
+                "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
+            newsWidgetScript.src =
+                "https://s3.tradingview.com/external-embedding/embed-widget-timeline.js";
+
+            chartScript.innerHTML = `
+{
+"allow_symbol_change": true,
+"calendar": false,
+"details": false,
+"hide_side_toolbar": true,
+"hide_top_toolbar": false,
+"hide_legend": false,
+"hide_volume": false,
+"hotlist": false,
+"interval": "60",
+"locale": "en",
+"save_image": true,
+"style": "1",
+"symbol": "${symbolName}",
+"theme": "dark",
+"timezone": "America/New_York",
+"backgroundColor": "#0F0F0F",
+"gridColor": "rgba(242, 242, 242, 0.06)",
+"watchlist": [],
+"withdateranges": false,
+"compareSymbols": [],
+"studies": [],
+"autosize": true,
+"isTransparent": true,
+"width": "100%",
+"height": "100%"
+}
+`;
+
+            singleWidgetScript.innerHTML = `
+
+{
+"symbol": "${symbolName}",
+"colorTheme": "dark",
+"isTransparent": true,
+"locale": "en",
+"width": "100%"
+}
+`;
+
+            newsWidgetScript.innerHTML = `
+
+{
+"displayMode": "regular",
+"feedMode": "symbol",
+"symbol": "${symbolName}",
+"colorTheme": "dark",
+"isTransparent": true,
+"locale": "en",
+"width": "100%",
+"height": "100%"
+}
+`;
+            chartWidgetDiv.appendChild(chartScript);
+            singleWidgetDiv.appendChild(singleWidgetScript);
+            newsWidgetDiv.appendChild(newsWidgetScript);
+        }
+        watchlist.forEach(createSymbolSection);
     </script>
 </html>
