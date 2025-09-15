@@ -233,7 +233,9 @@
         <p>${rssFeedJson.items[idx].description}</p>
                     `;
             });
-            return feedHTML;
+            return feedHTML
+                ? feedHTML
+                : "<h2 style='color:white'>No recent news</h2>";
         }
 
         async function fetchRSSFeedJSON(url) {
