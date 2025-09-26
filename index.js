@@ -1,3 +1,5 @@
+// NOTE FOR BIXIT
+// ADD INDIVIDUAL STOCKS HERE
 const watchlist = [
     { symbolName: "COINBASE:BTCUSDT", newsQuery: "Bitcoin" },
     { symbolName: "NASDAQ:TSLA", newsQuery: "TSLA" },
@@ -34,6 +36,8 @@ async function createNewsSection() {
         "https://s3.tradingview.com/external-embedding/embed-widget-timeline.js";
     calendarScript.src =
         "https://s3.tradingview.com/external-embedding/embed-widget-events.js";
+    // NOTE FOR BIXIT
+    // Settings for the top stories widget
     topStoriesScript.innerHTML = `
             {
                 "displayMode": "adaptive",
@@ -45,6 +49,9 @@ async function createNewsSection() {
                 "height": "100%"
             }
     `
+
+    // NOTE FOR BIXIT
+    // Settings for the calendar widget
     calendarScript.innerHTML = `
             {
             "colorTheme": "dark",
@@ -97,6 +104,9 @@ async function createSymbolSection(symbol) {
         "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     singleWidgetScript.src =
         "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
+
+    // NOTE FOR BIXIT
+    // Settings for Individual Stock charts
     chartScript.innerHTML = `
         {
         "allow_symbol_change": true,
@@ -127,6 +137,8 @@ async function createSymbolSection(symbol) {
         }
         `;
 
+    // NOTE FOR BIXIT
+    // Settings for the simple price widget
     singleWidgetScript.innerHTML = `
 
         {
