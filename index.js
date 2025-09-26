@@ -11,6 +11,59 @@ const watchlist = [
     "NASDAQ:COIN",
 ];
 
+async function createNewsSection() {
+    const mainContentDiv = document.getElementById("main-content");
+    const newsSectionWrapper = document.createElement("div");
+    const topStoriesDiv = document.createElement("div");
+    const calendarDiv = document.createElement("div");
+
+    newsSectionWrapper.className = "news-section";
+    topStoriesDiv.className = "top-stories";
+    calendarDiv.className = "calendar";
+
+    const topStoriesScript = document.createElement("script");
+    const calendarScript = document.createElement("script");
+
+    topStoriesScript.type = "text/javascript";
+    calendarScript.type = "text/javascript";
+
+    topStoriesScript.async = true;
+    calendarScript.async = true;
+
+    topStoriesScript.src =
+        "https://s3.tradingview.com/external-embedding/embed-widget-timeline.js";
+    calendarScript.src =
+        "https://s3.tradingview.com/external-embedding/embed-widget-events.js";
+    topStoriesScript.innerHTML = `
+            {
+                "displayMode": "adaptive",
+                "feedMode": "all_symbols",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "en",
+                "width": "100%",
+                "height": "100%"
+            }
+    `
+    calendarScript.innerHTML = `
+            {
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en",
+            "countryFilter": "us",
+            "importanceFilter": "-1,0,1",
+            "width": "100%",
+            "height": "100%"
+            }
+    `
+    mainContentDiv.appendChild(newsSectionWrapper);
+    newsSectionWrapper.appendChild(topStoriesDiv);
+    newsSectionWrapper.appendChild(calendarDiv);
+    topStoriesDiv.appendChild(topStoriesScript);
+    calendarDiv.appendChild(calendarScript);
+
+}
+
 async function createSymbolSection(symbolName) {
     const mainContentDiv = document.getElementById("main-content");
     const singleSymbolSectionWrapper = document.createElement("div");
@@ -87,7 +140,7 @@ async function createSymbolSection(symbolName) {
 
     // we add "stock to the query in the query string here when we query for the the symbolName news"
     let googleNewsFeedURL = encodeURIComponent(
-        `https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&oc=11&q=${symbolName.split(":")[1]}+after:${getYesterdaysDate()}`,
+        `https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&oc=11&q=${symbolName.split(":")[1] + " stock"}+after:${getYesterdaysDate()}`,
     );
 
     newsWidgetDiv.innerHTML = await getNewsWidget(googleNewsFeedURL);
@@ -143,6 +196,7 @@ async function main() {
     for (let i = 0; i < watchlist.length; i++) {
         await createSymbolSection(watchlist[i])
     }
+    await createNewsSection();
 }
 
 main();

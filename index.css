@@ -29,6 +29,21 @@ body {
     padding-bottom: 30px;
 }
 
+.news-section {
+    display: grid;
+    grid-gap: 30px;
+    height: 39em;
+    margin-bottom: 30px;
+}
+
+.top-stories {
+    grid-column: 1;
+}
+
+.calendar {
+    grid-column: 2;
+}
+
 .chart-widget {
     grid-column: 1;
     grid-row: 1 / 3;
