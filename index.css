@@ -58,15 +58,16 @@ body {
     grid-column: 2;
     grid-row: 2 / 3;
     overflow-y: scroll;
+    scrollbar-color: #983343 black;
 }
 
 .news-link {
-    color: #136415;
+    color: #6bb768;
     text-decoration: none;
 }
 
 .news-link:hover {
-    color: #6bb768;
+    color: #983343;
     text-decoration:none; 
     cursor:pointer;  
 }

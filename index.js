@@ -1,14 +1,14 @@
 const watchlist = [
-    "COINBASE:BTCUSDT",
-    "NASDAQ:TSLA",
-    "NASDAQ:NVDA",
-    "AMEX:GLD",
-    "BATS:GDX",
-    "BATS:GDXJ",
-    "AMEX:SLV",
-    "NASDAQ:GLXY",
-    "NASDAQ:HOOD",
-    "NASDAQ:COIN",
+    { symbolName: "COINBASE:BTCUSDT", newsQuery: "Bitcoin" },
+    { symbolName: "NASDAQ:TSLA", newsQuery: "TSLA" },
+    { symbolName: "NASDAQ:NVDA", newsQuery: "NVDA" },
+    { symbolName: "AMEX:GLD", newsQuery: "GLD" },
+    { symbolName: "BATS:GDX", newsQuery: "GDX Stock" },
+    { symbolName: "BATS:GDXJ", newsQuery: "GDXJ" },
+    { symbolName: "AMEX:SLV", newsQuery: "SLV Stock" },
+    { symbolName: "NASDAQ:GLXY", newsQuery: "Galaxy Digital Stock" },
+    { symbolName: "NASDAQ:HOOD", newsQuery: "Robinhood Stock" },
+    { symbolName: "NASDAQ:COIN", newsQuery: "Coinbase Stock" },
 ];
 
 async function createNewsSection() {
@@ -64,7 +64,7 @@ async function createNewsSection() {
 
 }
 
-async function createSymbolSection(symbolName) {
+async function createSymbolSection(symbol) {
     const mainContentDiv = document.getElementById("main-content");
     const singleSymbolSectionWrapper = document.createElement("div");
     const chartWidgetDiv = document.createElement("div");
@@ -111,7 +111,7 @@ async function createSymbolSection(symbolName) {
         "locale": "en",
         "save_image": true,
         "style": "1",
-        "symbol": "${symbolName}",
+        "symbol": "${symbol.symbolName}",
         "theme": "dark",
         "timezone": "America/New_York",
         "backgroundColor": "#0F0F0F",
@@ -130,7 +130,7 @@ async function createSymbolSection(symbolName) {
     singleWidgetScript.innerHTML = `
 
         {
-        "symbol": "${symbolName}",
+        "symbol": "${symbol.symbolName}",
         "colorTheme": "dark",
         "isTransparent": true,
         "locale": "en",
@@ -140,7 +140,7 @@ async function createSymbolSection(symbolName) {
 
     // we add "stock to the query in the query string here when we query for the the symbolName news"
     let googleNewsFeedURL = encodeURIComponent(
-        `https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&oc=11&q=${symbolName.split(":")[1] + " stock"}+after:${getYesterdaysDate()}`,
+        `https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&oc=11&q=${symbol.newsQuery}+after:${getYesterdaysDate()}`,
     );
 
     newsWidgetDiv.innerHTML = await getNewsWidget(googleNewsFeedURL);
@@ -165,13 +165,13 @@ async function getNewsWidget(newsFeedURL) {
 
 async function fetchRSSFeedJSON(url) {
     try {
-        const proxyUrl = `https://api.allorigins.win/get?url=${url}`;
+        const proxyUrl = `https://corsproxy.io/?url=${url}`;
         const response = await fetch(proxyUrl);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
 
+        const xmlString = await response.text();
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, "application/xml");
+        const xmlDoc = parser.parseFromString(xmlString, "application/xml");
         const items = xmlDoc.querySelectorAll("item");
 
         return Array.from(items).map(item => ({
@@ -179,7 +179,7 @@ async function fetchRSSFeedJSON(url) {
             link: item.querySelector("link")?.textContent ?? ""
         }));
     } catch (err) {
-        console.error(err);
+        console.error("Error fetching RSS feed:", err);
         return [];
     }
 }
